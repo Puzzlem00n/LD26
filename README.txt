@@ -1,0 +1,1 @@
+LD26 starts here! What I started from: https://github.com/Puzzlem00n/BaseLibraries
