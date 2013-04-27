@@ -3,16 +3,22 @@ Player = require "player"
 game = {}
 
 loader.path = "map/"
-map = loader.load "Map.tmx"
-layer = map("Main")
 player = Player:new(400, 300)
+xlev = 1
+ylev = 1
 
 function game.update()
 	player:update()
 end
 
+function loadLevel(u, v)
+	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
+end
+
+loadLevel(xlev,ylev)
+
 function mapCollide(x, y)
-	local checkMap = layer(math.floor(x/tilesize), math.floor(y/tilesize))
+	local checkMap = currentMap("Main")(math.floor(x/tilesize), math.floor(y/tilesize))
 	if checkMap ~= nil then
 		if checkMap.properties.solid then
 			return true
@@ -22,5 +28,5 @@ end
 
 function game.draw()
 	player.draw()
-	map:draw()
+	currentMap:draw()
 end

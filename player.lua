@@ -4,8 +4,8 @@ function Player:initialize(x, y)
 	self.name = "player"
 	self.l = x
 	self.t = y
-	self.w = 40
-	self.h = 40
+	self.w = 35
+	self.h = 35
 	self.vx = 0
 	self.vy = 0
 	self.speed = 6
@@ -63,6 +63,24 @@ function Player:update()
 	
 	self.l = self.l + self.vx
 	self.t = self.t + self.vy
+	
+	if self.l < 0 - self.w then
+		xlev = xlev - 1
+		loadLevel(xlev, ylev)
+		self.l = love.graphics:getWidth() - self.w
+	elseif self.l > love.graphics:getWidth() then
+		xlev = xlev + 1
+		loadLevel(xlev, ylev)
+		self.l = 0
+	elseif self.t < 0 - self.h then
+		ylev = ylev - 1
+		loadLevel(xlev, ylev)
+		self.l = love.graphics:getWidth() - self.h
+	elseif self.t > love.graphics:getHeight() then
+		ylev = ylev + 1
+		loadLevel(xlev, ylev)
+		self.t = 0
+	end
 end
 
 function Player:draw()
