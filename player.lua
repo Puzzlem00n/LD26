@@ -9,7 +9,7 @@ function Player:initialize(x, y)
 	self.vx = 0
 	self.vy = 0
 	self.speed = 6
-	tilesize = 20
+	self.color = colors.white
 end
 
 function Player:update()
@@ -40,7 +40,6 @@ function Player:update()
 	elseif self.vx > 0 then
 		if mapCollide(self.l + self.vx + self.w, self.t + 1) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) then
 			self.l = (math.floor((self.l + self.w + self.speed) / tilesize) * tilesize) - self.w
-			print(self.l)
 			self.vx = 0
 		end
 	else
@@ -84,8 +83,9 @@ function Player:update()
 end
 
 function Player:draw()
-	--FIX LATER
-	love.graphics.rectangle('fill', player.l, player.t, player.w, player.h)
+	love.graphics.setColor(self.color[1], self.color[2], self.color[3])
+	love.graphics.rectangle('fill', self.l, self.t, self.w, self.h)
+	love.graphics.setColor(255, 255, 255)
 end
 
 return Player

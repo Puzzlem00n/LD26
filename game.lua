@@ -1,8 +1,17 @@
 Player = require "player"
+Pickup = require "pickup"
 
 game = {}
 
+colors = {
+	red = {155, 47, 35},
+	blue = {25, 45, 95},
+	yellow = {210, 184, 110},
+	white = {255, 255, 255},
+	black = {0, 0, 0}
+}
 loader.path = "map/"
+tilesize = 20
 player = Player:new(400, 300)
 xlev = 1
 ylev = 1
@@ -12,7 +21,21 @@ function game.update()
 end
 
 function loadLevel(u, v)
+	bump.initialize(40)
+	bump.add(player)
 	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
+	pickups = {}
+	for x = 0, 29 do
+		for y = 0, 39 do
+			local tile = currentMap("Main")(x, y)
+			if tile ~= nil and tile.properties.pickup then
+				if tile.properties.red then col = 1
+				elseif tile.properties.blue then col = 2
+				elseif tile.properties.yellow then col = 3 end
+				table.insert(pickups, Pickup:new(x*20,y*20,col))
+			end
+		end
+	end
 end
 
 loadLevel(xlev,ylev)
@@ -27,6 +50,9 @@ function mapCollide(x, y)
 end
 
 function game.draw()
-	player.draw()
 	currentMap:draw()
+	for i, pickup in pairs(pickups) do
+		pickup:draw()
+	end
+	player:draw()
 end
