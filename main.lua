@@ -10,7 +10,7 @@ function love.load()
 	gamestate = menu
 	maxframe = 0.1
 	pausedopac = 0
-	love.graphics.setBackgroundColor(0,255,0)
+	love.graphics.setBackgroundColor(0,0,0)
 	paused = false
 end
 

@@ -1,4 +1,4 @@
---loader = require "AdvTiledLoader.Loader"
+loader = require "AdvTiledLoader.Loader"
 --require "LoveFrames.init"
 bump = require "lib.bump"
 anim8 = require "lib.anim8"

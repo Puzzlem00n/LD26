@@ -1,21 +1,26 @@
+Player = require "player"
+
 game = {}
 
---[[loader.path = "maps/"
-map = loader.load "mapfile.tmx"
-layer = map.tl("Main")]]
+loader.path = "map/"
+map = loader.load "Map.tmx"
+layer = map("Main")
+player = Player:new(400, 300)
 
 function game.update()
+	player:update()
 end
 
---[[
 function mapCollide(x, y)
-	local checkMap = layer(math.floor(x/player.w) + 1, math.floor(y/player.h) + 1)
-	if checkMap.properties.solid then
-		return true
+	local checkMap = layer(math.floor(x/tilesize), math.floor(y/tilesize))
+	if checkMap ~= nil then
+		if checkMap.properties.solid then
+			return true
+		end
 	end
 end
-]]
 
 function game.draw()
-	love.graphics.print("Game", 0, 0)
+	player.draw()
+	map:draw()
 end
