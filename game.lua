@@ -1,5 +1,7 @@
 Player = require "player"
 Pickup = require "pickup"
+BumperH = require "bumperHoriz"
+BumperV = require "bumperVert"
 
 game = {}
 
@@ -7,8 +9,8 @@ colors = {
 	red = {155, 47, 35},
 	blue = {25, 45, 95},
 	yellow = {210, 184, 110},
-	white = {255, 255, 255},
-	black = {0, 0, 0}
+	white = {230, 225, 206},
+	black = {16, 15, 21}
 }
 loader.path = "map/"
 tilesize = 20
@@ -19,8 +21,8 @@ ylev = 1
 function game.update()
 	player:update()
 	bump.collide()
-	for i, pickup in pairs(pickups) do
-		pickup:update()
+	for i, ents in pairs(ents) do
+		ents:update()
 	end
 end
 
@@ -39,28 +41,47 @@ function bump.collision(i1, i2, dx, dy)
 		if i2.alpha ~= 0 then
 			player.color = i2.color
 		end
+	elseif instanceOf(BumperH,i1) or instanceOf(BumperH,i2) then
+		restartLevel()
+	elseif instanceOf(BumperV,i1) or instanceOf(BumperV,i2) then
+		restartLevel()
 	end
 end
 
 function loadLevel(u, v)
 	bump.initialize(40)
 	bump.add(player)
+	restartx = player.l
+	restarty = player.t
+	restartcol = player.color
 	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
-	pickups = {}
+	ents = {}
 	for x = 0, 29 do
 		for y = 0, 39 do
 			local tile = currentMap("Main")(x, y)
-			if tile ~= nil and tile.properties.pickup then
-				if tile.properties.red then col = 1
-				elseif tile.properties.blue then col = 2
-				elseif tile.properties.yellow then col = 3 end
-				table.insert(pickups, Pickup:new(x*20,y*20,col))
+			if tile ~= nil then
+				if tile.properties.pickup then
+					if tile.properties.red then col = 1
+					elseif tile.properties.blue then col = 2
+					elseif tile.properties.yellow then col = 3 end
+					table.insert(ents, Pickup:new(x*20,y*20,col))
+				elseif tile.properties.hbumper then
+					table.insert(ents, BumperH:new(x*20,y*20))
+				elseif tile.properties.vbumper then
+					table.insert(ents, BumperV:new(x*20,y*20))
+				end
 			end
 		end
 	end
 end
 
 loadLevel(xlev,ylev)
+
+function restartLevel()
+	player.l = restartx
+	player.t = restarty
+	player.color = restartcol
+end
 
 function mapCollide(x, y)
 	local checkMap = currentMap("Main")(math.floor(x/tilesize), math.floor(y/tilesize))
@@ -73,8 +94,8 @@ end
 
 function game.draw()
 	currentMap:draw()
-	for i, pickup in pairs(pickups) do
-		pickup:draw()
+	for i, ents in pairs(ents) do
+		ents:draw()
 	end
 	player:draw()
 end

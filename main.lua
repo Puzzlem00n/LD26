@@ -8,9 +8,8 @@ local skip = dt * 2
 
 function love.load()
 	gamestate = menu
-	maxframe = 0.1
 	pausedopac = 0
-	love.graphics.setBackgroundColor(0,0,0)
+	love.graphics.setBackgroundColor(colors.black[1],colors.black[2],colors.black[3])
 	paused = false
 end
 

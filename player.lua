@@ -63,6 +63,12 @@ function Player:update()
 	self.l = self.l + self.vx
 	self.t = self.t + self.vy
 	
+	if self.color == colors.yellow then
+		self.speed = 12
+	else
+		self.speed = 6
+	end
+	
 	if self.l < 0 - self.w then
 		xlev = xlev - 1
 		loadLevel(xlev, ylev)
