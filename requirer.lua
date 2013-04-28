@@ -9,5 +9,3 @@ require "lib.middleclass"
 arc_path = 'Navi.arc.'
 require(arc_path .. 'arc')
 navi = require(arc_path .. 'navi')
-
-imgPickup = love.graphics.newImage("img/Pickup.png")

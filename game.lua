@@ -62,10 +62,11 @@ function loadLevel(u, v)
 	restarty = player.t
 	restartcol = player.color
 	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
+	currentMap("Designer").visible = false
 	ents = {}
 	for y = 0, 29 do
 		for x = 0, 39 do
-			local tile = currentMap("Main")(x, y)
+			local tile = currentMap("Designer")(x, y)
 			if tile ~= nil then
 				if tile.properties.pickup then
 					if tile.properties.red then col = 1 end
