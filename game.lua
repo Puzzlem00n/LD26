@@ -3,6 +3,7 @@ Pickup = require "pickup"
 BumperH = require "bumperHoriz"
 BumperV = require "bumperVert"
 Crate = require "crate"
+Zombie = require "zombie"
 
 game = {}
 
@@ -15,23 +16,17 @@ colors = {
 }
 loader.path = "map/"
 tilesize = 20
-player = Player:new(400, 300)
+player = Player:new(443, 303)
 xlev = 1
 ylev = 1
 
 function game.update()
 	player:update()
 	bump.collide()
-	for i, ents in pairs(ents) do
-		if ents.update then
-			ents:update()
+	for i, ent in pairs(ents) do
+		if ent.update then
+			ent:update()
 		end
-	end
-end
-
-function bump.shouldCollide(i1, i2)
-	if instanceOf(Player, i1) or instanceOf(Player,i2) then
-		return true
 	end
 end
 
@@ -44,22 +39,42 @@ function bump.collision(i1, i2, dx, dy)
 		if i2.alpha ~= 0 then
 			player.color = i2.color
 		end
-	elseif instanceOf(BumperH,i1) or instanceOf(BumperH,i2) then
-		restartLevel()
-	elseif instanceOf(BumperV,i1) or instanceOf(BumperV,i2) then
-		restartLevel()
-	elseif instanceOf(Crate,i1) then
-		i1:move(dx, dy)
-	elseif instanceOf(Crate,i2) then
-		i2:move(-dx, -dy)
+	elseif instanceOf(Bumper,i1) or instanceOf(Bumper,i2) then
+		if instanceOf(Player,i1) or instanceOf(Player,i2) then
+			restartLevel()
+		end
+		if instanceOf(Crate,i1) then
+			i2.v = -i2.v
+		elseif instanceOf(Crate,i2) then
+			i1.v = -i1.v
+		end
+	elseif instanceOf(Crate,i1) and instanceOf(Player,i2) then
+		if player.color == colors.red then
+			i1:move(dx, dy, i2)
+		else
+			player.l = player.l - dx
+			player.t = player.t - dy
+		end
+	elseif instanceOf(Crate,i2) and instanceOf (Player, i1) then
+		if player.color == colors.red then
+			i2:move(-dx, -dy, i1)
+		else
+			player.l = player.l + dx
+			player.t = player.t + dy
+		end
+	elseif instanceOf(Crate,i1) or instanceOf(Crate,i2) then
+		if instanceOf(Crate,i1) then i1:move(dx,dy,i2)
+		else i2:move(-dx,-dy,i1) end
+	elseif instanceOf(Zombie,i1) or instanceOf(Zombie,i2) then
+		if instanceOf(Player,i1) or instanceOf(Player,i2) then
+			restartLevel()
+		end
 	end
 end
 
 function loadLevel(u, v)
 	bump.initialize(40)
 	bump.add(player)
-	restartx = player.l
-	restarty = player.t
 	restartcol = player.color
 	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
 	currentMap("Designer").visible = false
@@ -79,6 +94,11 @@ function loadLevel(u, v)
 					table.insert(ents, BumperV:new(x*20,y*20))
 				elseif tile.properties.crate then
 					table.insert(ents, Crate:new(x*20,y*20))
+				elseif tile.properties.zombie then
+					table.insert(ents, Zombie:new(x*20,y*20))
+				elseif tile.properties.player then
+					restartx = x*20 + 3
+					restarty = y*20 + 3
 				end
 			end
 		end
@@ -91,6 +111,11 @@ function restartLevel()
 	player.l = restartx
 	player.t = restarty
 	player.color = restartcol
+	for i, ent in pairs(ents) do
+		if ent.reset then
+			ent:reset()
+		end
+	end
 end
 
 function mapCollide(x, y)
@@ -104,8 +129,8 @@ end
 
 function game.draw()
 	currentMap:draw()
-	for i, ents in pairs(ents) do
-		ents:draw()
+	for i, ent in pairs(ents) do
+		ent:draw()
 	end
 	player:draw()
 end

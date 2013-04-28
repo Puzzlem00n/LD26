@@ -14,7 +14,7 @@ function love.load()
 end
 
 function love.update(actualdt)
-	if not pause then
+	if not paused then
 		if actualdt > skip then actualdt = skip end
 		watch = watch + actualdt
 		while watch > dt do

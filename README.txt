@@ -1,1 +1,3 @@
-LD26 starts here! What I started from: https://github.com/Puzzlem00n/BaseLibraries
+My LD26 game, #. (Pronounced 'sharp.')
+
+The glitchy yet helpful mess I started from: https://github.com/Puzzlem00n/BaseLibraries

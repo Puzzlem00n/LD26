@@ -4,8 +4,8 @@ function Player:initialize(x, y)
 	self.name = "player"
 	self.l = x
 	self.t = y
-	self.w = 35
-	self.h = 35
+	self.w = 34
+	self.h = 34
 	self.vx = 0
 	self.vy = 0
 	self.speed = 6

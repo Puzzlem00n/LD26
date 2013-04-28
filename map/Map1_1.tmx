@@ -40,6 +40,11 @@
     <property name="yellow" value="1"/>
    </properties>
   </tile>
+  <tile id="7">
+   <properties>
+    <property name="player" value="1"/>
+   </properties>
+  </tile>
   <tile id="8">
    <properties>
     <property name="zombie" value="1"/>
@@ -53,7 +58,7 @@
  </layer>
  <layer name="Designer" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztzrENACAMA7AKhvb/i/kAiQFlsS9wFfBipQMAF50O8NWkA2E7HQAAYg7eiAAV
+   eJztzsEJACAMBLBCH7r/xO4gyFFJJkgVAPCLlQ7w1E4HGK/TAQC4dAC7pAAT
   </data>
  </layer>
 </map>
