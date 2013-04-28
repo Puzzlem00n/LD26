@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="Tileset" tilewidth="20" tileheight="20">
-  <image source="../img/Tileset.png" width="120" height="20"/>
+  <image source="../img/Tileset.png" width="160" height="20"/>
   <tile id="0">
    <properties>
     <property name="solid" value="1"/>
@@ -25,10 +25,15 @@
     <property name="red" value="1"/>
    </properties>
   </tile>
+  <tile id="6">
+   <properties>
+    <property name="crate" value="1"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Main" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztlkEKACAIBIvq/1/u6ilQxKbYgSAw2FE81JrIpheeH/2o3OjJk1nlt4KZmp8/09bld84nQvSb5k70s7y+f3S/6Nss5OdnBDPp83sF+v+Z7ieEEBls5b0Atw==
+   eJztltEKABAQBAn5/z+Wt3tSd23saaeUIjt3SUoRaOrF8aMfKy9q8mTe8hvBTPXPn2nX5XfORzCBZ20Y38Fu5ox+luz3j90vuheF/Py0YCZ7/7LA/n9m9xNCCAQLN5wAvg==
   </data>
  </layer>
 </map>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="20" tileheight="20">
  <tileset firstgid="1" name="Tileset" tilewidth="20" tileheight="20">
-  <image source="../img/Tileset.png" width="120" height="20"/>
+  <image source="../img/Tileset.png" width="160" height="20"/>
   <tile id="0">
    <properties>
     <property name="solid" value="1"/>
@@ -38,7 +38,7 @@
  </tileset>
  <layer name="Main" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt1ssKwCAMRFEf4P9/siuXKpqJJmEOuAvktrRgSoSWH56IfVaNZ2ofdqJnUdgn46lv93+zT+amr2qETER8f8idFr8/T30ns0UnZ7kTOYsSqc8L6/dn631ERAgdaUwAwg==
+   eJztlkEKACAIBK2g/z+5U1dD3EplB7wt7BQFihA07eFU9IvKPtP80InOoqCfj0x+p/9NPx8//IYhy/vTOyO+v0x+lmy/o6N2IrMoKvllIfr+HN2PEEIQLGiMAMI=
   </data>
  </layer>
 </map>

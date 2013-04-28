@@ -2,6 +2,7 @@ Player = require "player"
 Pickup = require "pickup"
 BumperH = require "bumperHoriz"
 BumperV = require "bumperVert"
+Crate = require "crate"
 
 game = {}
 
@@ -22,7 +23,9 @@ function game.update()
 	player:update()
 	bump.collide()
 	for i, ents in pairs(ents) do
-		ents:update()
+		if ents.update then
+			ents:update()
+		end
 	end
 end
 
@@ -45,6 +48,10 @@ function bump.collision(i1, i2, dx, dy)
 		restartLevel()
 	elseif instanceOf(BumperV,i1) or instanceOf(BumperV,i2) then
 		restartLevel()
+	elseif instanceOf(Crate,i1) then
+		i1:move(dx, dy)
+	elseif instanceOf(Crate,i2) then
+		i2:move(-dx, -dy)
 	end
 end
 
@@ -56,19 +63,21 @@ function loadLevel(u, v)
 	restartcol = player.color
 	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
 	ents = {}
-	for x = 0, 29 do
-		for y = 0, 39 do
+	for y = 0, 29 do
+		for x = 0, 39 do
 			local tile = currentMap("Main")(x, y)
 			if tile ~= nil then
 				if tile.properties.pickup then
-					if tile.properties.red then col = 1
-					elseif tile.properties.blue then col = 2
-					elseif tile.properties.yellow then col = 3 end
+					if tile.properties.red then col = 1 end
+					if tile.properties.blue then col = 2 end
+					if tile.properties.yellow then col = 3 end
 					table.insert(ents, Pickup:new(x*20,y*20,col))
 				elseif tile.properties.hbumper then
 					table.insert(ents, BumperH:new(x*20,y*20))
 				elseif tile.properties.vbumper then
 					table.insert(ents, BumperV:new(x*20,y*20))
+				elseif tile.properties.crate then
+					table.insert(ents, Crate:new(x*20,y*20))
 				end
 			end
 		end
