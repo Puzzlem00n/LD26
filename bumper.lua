@@ -12,9 +12,16 @@ function Bumper:initialize(x, y, w, h)
 	self.w = w
 	self.h = h
 	bump.add(self)
+	self.rx = x
+	self.ry = y
 	self.v = 8
 	self.speed = 6
 	self.color = colors.yellow
+end
+
+function Bumper:reset()
+	self.l = self.rx
+	self.t = self.ry
 end
 
 function Bumper:draw()

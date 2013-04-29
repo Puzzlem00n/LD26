@@ -71,20 +71,20 @@ function Player:update()
 	
 	if self.l < 0 - self.w then
 		xlev = xlev - 1
-		loadLevel(xlev, ylev)
 		self.l = love.graphics:getWidth() - self.w
+		loadLevel(xlev, ylev)
 	elseif self.l > love.graphics:getWidth() then
 		xlev = xlev + 1
-		loadLevel(xlev, ylev)
 		self.l = 0
+		loadLevel(xlev, ylev)
 	elseif self.t < 0 - self.h then
 		ylev = ylev - 1
+		self.t = love.graphics:getHeight() - self.h
 		loadLevel(xlev, ylev)
-		self.l = love.graphics:getWidth() - self.h
 	elseif self.t > love.graphics:getHeight() then
 		ylev = ylev + 1
-		loadLevel(xlev, ylev)
 		self.t = 0
+		loadLevel(xlev, ylev)
 	end
 end
 

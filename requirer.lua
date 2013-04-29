@@ -1,11 +1,12 @@
 loader = require "AdvTiledLoader.Loader"
---require "LoveFrames.init"
 bump = require "lib.bump"
-anim8 = require "lib.anim8"
-camera = require "lib.camera"
 tween = require "lib.tween"
-Tserial = require "lib.Tserial"
 require "lib.middleclass"
-arc_path = 'Navi.arc.'
-require(arc_path .. 'arc')
-navi = require(arc_path .. 'navi')
+
+music = {volume = 1, path = love.audio.newSource("img/#.ogg", "stream")}
+music.path:setLooping(true)
+ding = love.audio.newSource("img/pickup.ogg", "static")
+
+painting = love.graphics.newImage("img/painting.png")
+paintingbot = love.graphics.newImage("img/paintingbottom.png")
+menuscreen = love.graphics.newImage("img/#.png")

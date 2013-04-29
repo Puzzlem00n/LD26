@@ -16,9 +16,10 @@ colors = {
 }
 loader.path = "map/"
 tilesize = 20
-player = Player:new(443, 303)
+player = Player:new(320, 280)
 xlev = 1
 ylev = 1
+reversaltimer = 2
 
 function game.update()
 	player:update()
@@ -31,22 +32,36 @@ function game.update()
 end
 
 function bump.collision(i1, i2, dx, dy)
-	if instanceOf(Pickup,i1) then
+	if instanceOf(Pickup,i1) and instanceOf(Player,i2) then
 		if i2.alpha ~= 0 then
 			player.color = i1.color
 		end
-	elseif instanceOf(Pickup,i2) then
-		if i2.alpha ~= 0 then
+		love.audio.play(ding)
+	elseif instanceOf(Pickup,i2) and instanceOf(Player,i1) then
+		if i1.alpha ~= 0 then
 			player.color = i2.color
 		end
+		love.audio.play(ding)
 	elseif instanceOf(Bumper,i1) or instanceOf(Bumper,i2) then
 		if instanceOf(Player,i1) or instanceOf(Player,i2) then
 			restartLevel()
 		end
-		if instanceOf(Crate,i1) then
-			i2.v = -i2.v
-		elseif instanceOf(Crate,i2) then
-			i1.v = -i1.v
+		if instanceOf(Crate,i1) or instanceOf(Crate,i2) then
+			if instanceOf(Crate,i1) then
+				reversaltimer = reversaltimer + 1
+				if reversaltimer > 2 then
+					i2.v = -i2.v
+					reversaltimer = 0
+				end
+			elseif instanceOf(Crate,i2) then
+				reversaltimer = reversaltimer + 1
+				if reversaltimer > 2 then
+					i1.v = -i1.v
+					reversaltimer = 0
+				end
+			end
+		else
+			reversaltimer = 2
 		end
 	elseif instanceOf(Crate,i1) and instanceOf(Player,i2) then
 		if player.color == colors.red then
@@ -73,12 +88,15 @@ function bump.collision(i1, i2, dx, dy)
 end
 
 function loadLevel(u, v)
+	ents = {}
+	if u == 7 and v == 5 then
+		gamestate = ending
+	end
 	bump.initialize(40)
 	bump.add(player)
 	restartcol = player.color
-	currentMap = loader.load("Map".. v .."_".. u ..".tmx")
+	currentMap = loader.load("Map".. u .."_".. v ..".tmx")
 	currentMap("Designer").visible = false
-	ents = {}
 	for y = 0, 29 do
 		for x = 0, 39 do
 			local tile = currentMap("Designer")(x, y)
@@ -115,6 +133,12 @@ function restartLevel()
 		if ent.reset then
 			ent:reset()
 		end
+	end
+end
+
+function game.keypressed(key)
+	if key == "r" then
+		restartLevel()
 	end
 end
 

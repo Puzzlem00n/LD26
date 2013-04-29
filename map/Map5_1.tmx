@@ -51,14 +51,14 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Designer" width="40" height="30">
-  <data encoding="base64" compression="zlib">
-   eJztziEBAAAIA7BL+icmwxWCLcESAIBf5joAAEBlAWDAAAk=
-  </data>
- </layer>
  <layer name="Main" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztlzEKACAMxOr/P+0DnPTwemICjpJ0sGAV/My4dH7pS8Q146mHPs1Dn+bp6NvZQ/Rp0KdBnwbvd/Wk9znuuTz0eT2dpP+P0vvgbSZtVgCv
+   eJzt1MEJACAMxdC6/9JuUAqxUGoeePMQPmiEJEn7nMIRV9nZ/ftM3/H3PvoGtu738n/I7k7Yzz7GPsY+xj6mo+8C7tMAQw==
+  </data>
+ </layer>
+ <layer name="Designer" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzkEJAAAIBLB72j+xKQ5BtgRLAABomOsAAMATC12AAAk=
   </data>
  </layer>
 </map>

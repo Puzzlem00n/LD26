@@ -1,16 +1,19 @@
 require "requirer"
 require "game"
 require "menu"
+require "ending"
 
 local watch = 0
 dt = 1.0 / 30
 local skip = dt * 2
 
 function love.load()
+	love.mouse.setVisible(false)
 	gamestate = menu
 	pausedopac = 0
 	love.graphics.setBackgroundColor(colors.black[1],colors.black[2],colors.black[3])
 	paused = false
+	love.audio.play(music.path)
 end
 
 function love.update(actualdt)
@@ -21,8 +24,6 @@ function love.update(actualdt)
 			watch = watch - dt
 			gamestate.update()
 		end
-		arc.check_keys(dt)
-		--loveframes.update(dt)
 		if love.keyboard.isDown("escape") then
 			love.event.quit()
 		end
@@ -31,8 +32,6 @@ end
 
 function love.draw()
 	gamestate.draw()
-	--loveframes.draw()
-	arc.clear_key()
 	love.graphics.setColor(0,0,0,pausedopac)
 	love.graphics.rectangle("fill", 0, 0, love.graphics:getWidth(), love.graphics:getHeight())
 	love.graphics.setColor(255,255,255,255)
@@ -42,29 +41,24 @@ function love.mousepressed(x, y, button)
 	if gamestate.mousepressed then
 		gamestate.mousepressed(x, y, button)
 	end
-	--loveframes.mousepressed(x, y, button)
 end
 
 function love.mousereleased(x, y, button)
 	if gamestate.mousereleased then
 		gamestate.mousereleased(x, y, button)
 	end
-	--loveframes.mousereleased(x, y, button)
 end
 
 function love.keypressed(key, unicode)
 	if gamestate.keypressed then
 		gamestate.keypressed(key)
 	end
-	--loveframes.keypressed(key, unicode)
-	arc.set_key(k)
 end
 
 function love.keyreleased(key)
 	if gamestate.keyreleased then
 		gamestate.keyreleased(key)
 	end
-	--loveframes.keyreleased(key)
 end
 
 function love.focus(f)
