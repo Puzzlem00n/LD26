@@ -43,26 +43,23 @@ function Player:update()
 	if mapCollide(self.l + self.vx, self.t) or mapCollide(self.l + self.vx, self.t + self.h - 1) or mapCollide (self.l + self.vx, self.t + self.h / 2) then
 		self.l = math.floor(self.l / tilesize) * tilesize
 		self.vx = 0
-		print("LEFT!")
 	elseif mapCollide(self.l + self.vx + self.w, self.t) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) or mapCollide (self.l + self.vx + self.w, self.t + self.h / 2) then
 		self.l = (math.floor((self.l + self.w + self.speed) / tilesize) * tilesize) - self.w
 		self.vx = 0
-		print("RIGHT!")
 	end
+	
+	self.l = self.l + self.vx
 	
 	signvy = sign(self.vy)
 	if math.abs(self.vy) > tilesize then self.vy = signvy*tilesize end
 	if mapCollide(self.l, self.t + self.h + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.h + self.vy) then
 		self.t = (math.floor((self.t + self.h + self.speed) / tilesize) * tilesize) - self.h
 		self.vy = 0
-		print("DOWN!")
 	elseif mapCollide(self.l, self.t + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.vy) then
 		self.t = math.floor(self.t / tilesize) * tilesize
 		self.vy = 0
-		print("UP!")
 	end
 	
-	self.l = self.l + self.vx
 	self.t = self.t + self.vy
 	
 	if self.color == colors.yellow then

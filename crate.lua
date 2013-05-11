@@ -24,6 +24,8 @@ function Crate:move(dx, dy, other)
 		self.dx = 0
 	end
 	
+	self.l = self.l + self.dx
+	
 	signvy = sign(self.dy)
 	if math.abs(self.dy) > tilesize then self.dy = signvy*tilesize end
 	if mapCollide(self.l, self.t + self.h + self.dy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.dy) or mapCollide (self.l + self.w / 2, self.t + self.h + self.dy) then
@@ -41,7 +43,6 @@ function Crate:move(dx, dy, other)
 		other.t = other.t - dy
 	end
 	
-	self.l = self.l + self.dx
 	self.t = self.t + self.dy
 end
 

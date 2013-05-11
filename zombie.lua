@@ -48,7 +48,9 @@ function Zombie:update()
 		self.vx = 0
 		self.xSpeed = 0
 	end
-
+	
+	self.l = self.l + self.vx
+	
 	if math.abs(self.ySpeed) > self.maxSpeed then
 		self.ySpeed = self.maxSpeed
 	else
@@ -69,8 +71,7 @@ function Zombie:update()
 		self.vy = 0
 		self.ySpeed = 0
 	end
-
-	self.l = self.l + self.vx
+	
 	self.t = self.t + self.vy
 end
 
