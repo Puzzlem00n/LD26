@@ -19,11 +19,6 @@ function Bumper:initialize(x, y, w, h)
 	self.color = colors.yellow
 end
 
-function Bumper:reset()
-	self.l = self.rx
-	self.t = self.ry
-end
-
 function Bumper:draw()
 	love.graphics.setColor(self.color[1], self.color[2], self.color[3])
 	love.graphics.rectangle("fill", self.l, self.t, self.w, self.h)

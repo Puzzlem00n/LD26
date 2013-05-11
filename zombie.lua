@@ -39,19 +39,14 @@ function Zombie:update()
 	end
 	self.vx = self.xSpeed * self.xDir
 	if player.color == colors.blue then self.vx = -self.vx end
-	if self.vx < 0 then
-		if mapCollide(self.l + self.vx, self.t + 1) or mapCollide(self.l + self.vx, self.t + self.h - 1) then
-			self.l = math.floor(self.l / tilesize) * tilesize
-			self.vx = 0
-			self.xSpeed = 0
-		end
-	elseif self.vx > 0 then
-		if mapCollide(self.l + self.vx + self.w, self.t + 1) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) then
-			self.l = (math.floor((self.l + self.w + self.vx) / tilesize) * tilesize) - self.w
-			self.vx = 0
-			self.xSpeed = 0
-		end
-	else
+	if mapCollide(self.l + self.vx, self.t) or mapCollide(self.l + self.vx, self.t + self.h - 1) or mapCollide (self.l + self.vx, self.t + self.h / 2) then
+		self.l = math.floor(self.l / tilesize) * tilesize
+		self.vx = 0
+		self.xSpeed = 0
+	elseif mapCollide(self.l + self.vx + self.w, self.t) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) or mapCollide (self.l + self.vx + self.w, self.t + self.h / 2) then
+		self.l = (math.floor((self.l + self.w + self.vx) / tilesize) * tilesize) - self.w
+		self.vx = 0
+		self.xSpeed = 0
 	end
 
 	if math.abs(self.ySpeed) > self.maxSpeed then
@@ -65,28 +60,18 @@ function Zombie:update()
 	end
 	self.vy = self.ySpeed * self.yDir
 	if player.color == colors.blue then self.vy = -self.vy end
-	if self.vy > 0 then
-		if mapCollide(self.l + 1, self.t + self.h + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.vy) then
-			self.t = (math.floor((self.t + self.h + self.vy) / tilesize) * tilesize) - self.h
-			self.vy = 0
-			self.ySpeed = 0
-		end
-	elseif self.vy < 0 then
-		if mapCollide(self.l + 1, self.t + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.vy) then
-			self.t = math.floor(self.t / tilesize) * tilesize
-			self.vy = 0
-			self.ySpeed = 0
-		end
-	else
+	if mapCollide(self.l, self.t + self.h + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.h + self.vy) then
+		self.t = (math.floor((self.t + self.h + self.vy) / tilesize) * tilesize) - self.h
+		self.vy = 0
+		self.ySpeed = 0
+	elseif mapCollide(self.l, self.t + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.vy) then
+		self.t = math.floor(self.t / tilesize) * tilesize
+		self.vy = 0
+		self.ySpeed = 0
 	end
 
 	self.l = self.l + self.vx
 	self.t = self.t + self.vy
-end
-
-function Zombie:reset()
-	self.l = self.rl
-	self.t = self.rt
 end
 
 function Zombie:draw()

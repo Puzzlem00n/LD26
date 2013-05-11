@@ -13,14 +13,22 @@ function Player:initialize(x, y)
 end
 
 function Player:update()
-	if love.keyboard.isDown("left") and not love.keyboard.isDown("right","up","down") then
+	if love.keyboard.isDown("left") then
 		self.vx = -self.speed
-	elseif love.keyboard.isDown("right") and not love.keyboard.isDown("up","down","left") then
+	end
+	if love.keyboard.isDown("right") then
 		self.vx = self.speed
-	elseif love.keyboard.isDown("up") and not love.keyboard.isDown("down","right","left") then
+	end
+	if love.keyboard.isDown("up") then
 		self.vy = -self.speed
-	elseif love.keyboard.isDown("down") and not love.keyboard.isDown("left","right","up") then
+	end
+	if love.keyboard.isDown("down") then
 		self.vy = self.speed
+	end
+	
+	if self.vx ~= 0 and self.vy ~= 0 then
+		self.vx = (self.vx * math.sqrt(2))/2
+		self.vy = (self.vy * math.sqrt(2))/2
 	end
 	
 	if not love.keyboard.isDown("left","right") then
@@ -32,32 +40,26 @@ function Player:update()
 	
 	signvx = sign(self.vx)
 	if math.abs(self.vx) > tilesize then self.vx = signvx*tilesize end
-	if self.vx < 0 then
-		if mapCollide(self.l + self.vx, self.t + 1) or mapCollide(self.l + self.vx, self.t + self.h - 1) then
-			self.l = math.floor(self.l / tilesize) * tilesize
-			self.vx = 0
-		end
-	elseif self.vx > 0 then
-		if mapCollide(self.l + self.vx + self.w, self.t + 1) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) then
-			self.l = (math.floor((self.l + self.w + self.speed) / tilesize) * tilesize) - self.w
-			self.vx = 0
-		end
-	else
+	if mapCollide(self.l + self.vx, self.t) or mapCollide(self.l + self.vx, self.t + self.h - 1) or mapCollide (self.l + self.vx, self.t + self.h / 2) then
+		self.l = math.floor(self.l / tilesize) * tilesize
+		self.vx = 0
+		print("LEFT!")
+	elseif mapCollide(self.l + self.vx + self.w, self.t) or mapCollide(self.l + self.vx + self.w, self.t + self.h - 1) or mapCollide (self.l + self.vx + self.w, self.t + self.h / 2) then
+		self.l = (math.floor((self.l + self.w + self.speed) / tilesize) * tilesize) - self.w
+		self.vx = 0
+		print("RIGHT!")
 	end
 	
 	signvy = sign(self.vy)
 	if math.abs(self.vy) > tilesize then self.vy = signvy*tilesize end
-	if self.vy > 0 then
-		if mapCollide(self.l + 1, self.t + self.h + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.vy) then
-			self.t = (math.floor((self.t + self.h + self.speed) / tilesize) * tilesize) - self.h
-			self.vy = 0
-		end
-	elseif self.vy < 0 then
-		if mapCollide(self.l + 1, self.t + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.vy) then
-			self.t = math.floor(self.t / tilesize) * tilesize 
-			self.vy = 0
-		end
-	else
+	if mapCollide(self.l, self.t + self.h + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.h + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.h + self.vy) then
+		self.t = (math.floor((self.t + self.h + self.speed) / tilesize) * tilesize) - self.h
+		self.vy = 0
+		print("DOWN!")
+	elseif mapCollide(self.l, self.t + self.vy) or mapCollide(self.l + self.w - 1, self.t + self.vy) or mapCollide (self.l + self.w / 2, self.t + self.vy) then
+		self.t = math.floor(self.t / tilesize) * tilesize
+		self.vy = 0
+		print("UP!")
 	end
 	
 	self.l = self.l + self.vx

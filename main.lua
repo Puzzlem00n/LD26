@@ -32,6 +32,10 @@ end
 
 function love.draw()
 	gamestate.draw()
+	love.graphics.setBlendMode("multiplicative")
+	love.graphics.setColor(255,255,255,200)
+	love.graphics.draw(overlay, 0, 0)
+	love.graphics.setBlendMode("alpha")
 	love.graphics.setColor(0,0,0,pausedopac)
 	love.graphics.rectangle("fill", 0, 0, love.graphics:getWidth(), love.graphics:getHeight())
 	love.graphics.setColor(255,255,255,255)

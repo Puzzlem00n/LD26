@@ -16,10 +16,10 @@ colors = {
 }
 loader.path = "map/"
 tilesize = 20
-player = Player:new(320, 280)
-xlev = 1
+player = Player:new(383, 283)
+xlev = 4
 ylev = 1
-reversaltimer = 2
+playpushed = 0
 
 function game.update()
 	player:update()
@@ -29,57 +29,81 @@ function game.update()
 			ent:update()
 		end
 	end
+	playpushed = playpushed - 1
 end
 
 function bump.collision(i1, i2, dx, dy)
 	if instanceOf(Pickup,i1) and instanceOf(Player,i2) then
-		if i2.alpha ~= 0 then
-			player.color = i1.color
-		end
-		love.audio.play(ding)
-	elseif instanceOf(Pickup,i2) and instanceOf(Player,i1) then
 		if i1.alpha ~= 0 then
-			player.color = i2.color
+			player.color = i1.color
+			love.audio.play(ding)
 		end
-		love.audio.play(ding)
+	elseif instanceOf(Pickup,i2) and instanceOf(Player,i1) then
+		if i2.alpha ~= 0 then
+			player.color = i2.color
+			love.audio.play(ding)
+		end
 	elseif instanceOf(Bumper,i1) or instanceOf(Bumper,i2) then
 		if instanceOf(Player,i1) or instanceOf(Player,i2) then
 			restartLevel()
 		end
 		if instanceOf(Crate,i1) or instanceOf(Crate,i2) then
 			if instanceOf(Crate,i1) then
-				reversaltimer = reversaltimer + 1
-				if reversaltimer > 2 then
-					i2.v = -i2.v
-					reversaltimer = 0
+				if instanceOf(BumperV,i2) then
+					if dx ~= 0 then
+						i1.l = i1.l + dx
+						if playpushed > 0 then player.l = player.l + dx end
+					else i2.v = -i2.v end
+				elseif instanceOf(BumperH,i2) then
+					if dy ~= 0 then
+						i1.t = i1.t + dy
+						if playpushed > 0 then player.t = player.t + dy end
+					else i2.v = -i2.v end
 				end
 			elseif instanceOf(Crate,i2) then
-				reversaltimer = reversaltimer + 1
-				if reversaltimer > 2 then
-					i1.v = -i1.v
-					reversaltimer = 0
+				if instanceOf(BumperV,i1) then
+					if dx ~= 0 then
+						i2.l = i2.l - dx
+						if playpushed > 0 then player.l = player.l - dx end
+					else i1.v = -i1.v end
+				elseif instanceOf(BumperH,i1) then
+					if dy ~= 0 then
+						i2.t = i2.t - dy
+						if playpushed > 0 then player.t = player.t - dy end
+					else i1.v = -i1.v end
 				end
 			end
-		else
-			reversaltimer = 2
 		end
 	elseif instanceOf(Crate,i1) and instanceOf(Player,i2) then
 		if player.color == colors.red then
 			i1:move(dx, dy, i2)
+			playpushed = 5
 		else
 			player.l = player.l - dx
 			player.t = player.t - dy
 		end
-	elseif instanceOf(Crate,i2) and instanceOf (Player, i1) then
+	elseif instanceOf(Crate,i2) and instanceOf(Player, i1) then
 		if player.color == colors.red then
 			i2:move(-dx, -dy, i1)
+			playpushed = 5
 		else
 			player.l = player.l + dx
 			player.t = player.t + dy
 		end
 	elseif instanceOf(Crate,i1) or instanceOf(Crate,i2) then
-		if instanceOf(Crate,i1) then i1:move(dx,dy,i2)
-		else i2:move(-dx,-dy,i1) end
+		if instanceOf(Crate,i1) then
+			i1:move(dx,dy,i2)
+			if playpushed > 0 then
+				player.l = player.l + dx
+				player.t = player.t + dy
+			end
+		else
+			i2:move(-dx,-dy,i1)
+			if playpushed > 0 then
+				player.l = player.l - dx
+				player.t = player.t - dy
+			end
+		end
 	elseif instanceOf(Zombie,i1) or instanceOf(Zombie,i2) then
 		if instanceOf(Player,i1) or instanceOf(Player,i2) then
 			restartLevel()
@@ -92,6 +116,8 @@ function loadLevel(u, v)
 	if u == 7 and v == 5 then
 		gamestate = ending
 	end
+	restartx = player.l
+	restarty = player.t
 	bump.initialize(40)
 	bump.add(player)
 	restartcol = player.color
@@ -114,9 +140,6 @@ function loadLevel(u, v)
 					table.insert(ents, Crate:new(x*20,y*20))
 				elseif tile.properties.zombie then
 					table.insert(ents, Zombie:new(x*20,y*20))
-				elseif tile.properties.player then
-					restartx = x*20 + 3
-					restarty = y*20 + 3
 				end
 			end
 		end
@@ -129,16 +152,15 @@ function restartLevel()
 	player.l = restartx
 	player.t = restarty
 	player.color = restartcol
-	for i, ent in pairs(ents) do
-		if ent.reset then
-			ent:reset()
-		end
-	end
+	loadLevel(xlev, ylev)
 end
 
 function game.keypressed(key)
-	if key == "r" then
-		restartLevel()
+	if key == "r" then restartLevel()
+	elseif key == "1" then player.color = colors.red
+	elseif key == "2" then player.color = colors.yellow
+	elseif key == "3" then player.color = colors.blue
+	elseif key == "4" then player.color = colors.white
 	end
 end
 

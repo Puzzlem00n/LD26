@@ -4,11 +4,12 @@ box = {}
 box.l = 0
 box.t = 160
 box.endtimer = 0
+tween(8, music, {volume = 0})
+tween(5, box, {l = 400, t = 450})
+tween(8, box, {endtimer = 255})
 
 function ending.update()
-	tween(8, music, {volume = 0})
-	tween(5, box, {l = 400, t = 450})
-	tween(8, box, {endtimer = 255})
+	
 	tween.update(dt)
 	if box.endtimer == 255 then
 		love.event.quit()

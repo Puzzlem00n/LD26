@@ -6,16 +6,12 @@ function BumperV:initialize(x, y)
 end
 
 function BumperV:update()
-	if self.v < 0 then
-		if mapCollide(self.l + self.v, self.t + 1) or mapCollide(self.l + self.v, self.t + self.h - 1) then
-			self.l = math.floor(self.l / tilesize) * tilesize
-			self.v = -self.v
-		end
-	elseif self.v > 0 then
-		if mapCollide(self.l + self.v + self.h, self.t + 1) or mapCollide(self.l + self.v + self.h, self.t + self.h - 1) then
-			self.l = (math.floor((self.l + self.h + self.speed) / tilesize) * tilesize) - self.h
-			self.v = -self.v
-		end
+	if mapCollide(self.l, self.t + self.h + self.v) or mapCollide(self.l + self.w - 1, self.t + self.h + self.v) or mapCollide (self.l + self.w / 2, self.t + self.h + self.v) then
+		self.t = (math.floor((self.t + self.h + self.speed) / tilesize) * tilesize) - self.h
+		self.v = -self.v
+	elseif mapCollide(self.l, self.t + self.v) or mapCollide(self.l + self.w - 1, self.t + self.v) or mapCollide (self.l + self.w / 2, self.t + self.v) then
+		self.t = math.floor(self.t / tilesize) * tilesize
+		self.v = -self.v
 	end
 	
 	self.t = self.t + self.v
