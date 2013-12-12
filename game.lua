@@ -17,7 +17,7 @@ colors = {
 loader.path = "map/"
 tilesize = 20
 player = Player:new(383, 283)
-xlev = 4
+xlev = 1
 ylev = 1
 playpushed = 0
 
